@@ -15,14 +15,10 @@ app.get('/', (_request, response) => {
 
 app.get('/talker', async (_req, res) => {
   const talker = await readContentFile();
-  if (!talker.length) return res.status(200).json([])
+  if (!talker.length) return res.status(200).json([]);
   return res.status(200).json(talker);
 });
-
 
 app.listen(PORT, () => {
   console.log('Online');
 });
-
-
-"iniciando projeto"
