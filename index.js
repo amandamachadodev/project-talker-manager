@@ -1,10 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { readContentFile } = require('./fs-utils');
+const { readContentFile } = require('./utils');
 
 const app = express();
 app.use(bodyParser.json());
-app.listen(3000, () => console.log('ouvindo na porta 3000!'));
 const HTTP_OK_STATUS = 200;
 const PORT = '3000';
 
@@ -19,6 +18,18 @@ app.get('/talker', async (_req, res) => {
   return res.status(200).json(talker);
 });
 
+app.get('/talker/:id', async (req, res) => {
+  const { id } = req.params;
+  const talker = await readContentFile();
+  const data = talker.find((r) => r.id === Number(id));
+  if (!talker) {
+ return res.status(404).json({
+    message: 'Pessoa palestrante não encontrada',
+  }); 
+}
+  return res.status(200).json(data);
+});
+
 app.listen(PORT, () => {
-  console.log('Online');
+console.log('Online');
 });
