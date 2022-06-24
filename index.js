@@ -2,12 +2,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const crypto = require('crypto');
 const { readContentFile } = require('./utils');
+const { isValidEmail } = require('./middlewares/validateEmail');
+const { isValidPassword } = require('./middlewares/validatePassword');
 
-function generateToken() {
-  return crypto.randomBytes(8).toString('hex');
-}
-
-module.exports = generateToken;
 const app = express();
 app.use(bodyParser.json());
 const HTTP_OK_STATUS = 200;
@@ -36,21 +33,11 @@ app.get('/talker/:id', async (req, res) => {
   return res.status(200).json(data);
 });
 
-app.post('/login',
-(req, res) => {
-  try {
+app.post('/login', isValidEmail, isValidPassword, (req, res) => {
   const { email, password } = req.body;
-
-  if ([email, password].includes(undefined)) {
-    return res.status(401).json({ message: 'missing fields' });
-  }
-
+  login.push({ email, password });
   const token = crypto.randomBytes(8).toString('hex');
-
   return res.status(200).json({ token });
-} catch (error) {
-  return res.status(500).end();
-}
 });
 
 app.listen(PORT, () => {
