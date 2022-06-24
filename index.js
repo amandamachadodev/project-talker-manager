@@ -22,7 +22,7 @@ app.get('/talker/:id', async (req, res) => {
   const { id } = req.params;
   const talker = await readContentFile();
   const data = talker.find((r) => r.id === Number(id));
-  if (!talker) {
+  if (!data) {
  return res.status(404).json({
     message: 'Pessoa palestrante não encontrada',
   }); 
