@@ -35,9 +35,7 @@ app.get('/talker/:id', async (req, res) => {
 
 app.post('/login', isValidEmail, isValidPassword, async (req, res) => {
   const { email, password } = req.body;
-  const login = { email, password };
-  await writeContentFile(login);
-  login.push({ email, password });
+  await writeContentFile(email, password);
   const token = crypto.randomBytes(8).toString('hex');
   return res.status(200).json({ token });
 });
