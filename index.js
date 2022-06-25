@@ -52,7 +52,7 @@ app.post('/talker', isValidToken, isValidName, isValidAge, isValidTalk, isValidW
   const talker = await readContentFile();
   const data = talker.find((e) => e.name === name);
   await writeContentFile({ id, name, age, talk })
-  .then(res.status(200).json(data));
+  .then(res.status(201).json(data));
 });
 
 app.listen(PORT, () => {
