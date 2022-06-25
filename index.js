@@ -49,6 +49,7 @@ app.post('/login', isValidEmail, isValidPassword, async (req, res) => {
 app.post('/talker', isValidToken, isValidName, isValidAge, isValidTalk, isValidWatchedAt,
   isValidRate, async (req, res) => {
   const { id, name, age, talk } = req.body;
+  await writeTalkerFile(id, name, age, talk);
   return res.status(201).json({ id, name, age, talk });
 });
 
