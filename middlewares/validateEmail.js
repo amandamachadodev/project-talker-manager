@@ -2,11 +2,11 @@ const isValidEmail = (req, res, next) => {
     const { email } = req.body;
     if (
       email === undefined || email === []
-    ) res.status(400).json({ message: 'O campo "email" é obrigatório' });
+    ) return res.status(400).json({ message: 'O campo "email" é obrigatório' });
     if (
       !email.includes('@')
       || !email.includes('.com')
-    ) res.status(400).json({ message: 'O "email" deve ter o formato "email@email.com"' });
+    ) return res.status(400).json({ message: 'O "email" deve ter o formato "email@email.com"' });
   
     next();
   };
