@@ -4,6 +4,12 @@ const crypto = require('crypto');
 const { readContentFile, writeContentFile } = require('./utils');
 const { isValidEmail } = require('./middlewares/validateEmail');
 const { isValidPassword } = require('./middlewares/validatePassword');
+const { isValidToken } = require('./middlewares/validateToken');
+const { isValidName } = require('./middlewares/validateName');
+const { isValidAge } = require('./middlewares/validateAge');
+const { isValidTalk } = require('./middlewares/validateTalk');
+const { isValidWatchedAt } = require('./middlewares/validadeWatchedAt');
+const { isValidRate } = require('./middlewares/validateRate');
 
 const app = express();
 app.use(bodyParser.json());
@@ -38,6 +44,15 @@ app.post('/login', isValidEmail, isValidPassword, async (req, res) => {
   await writeContentFile(email, password);
   const token = crypto.randomBytes(8).toString('hex');
   return res.status(200).json({ token });
+});
+
+app.post('/talker', isValidToken, isValidName, isValidAge, isValidTalk, isValidWatchedAt,
+  isValidRate, async (req, res) => {
+  const { id, name, age, talk } = req.body;
+  const talker = await readContentFile();
+  const data = talker.find((e) => e.name === name);
+  await writeContentFile({ id, name, age, talk });
+  return res.status(200).json(data);
 });
 
 app.listen(PORT, () => {
