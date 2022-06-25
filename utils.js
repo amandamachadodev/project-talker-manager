@@ -9,7 +9,15 @@ const writeContentFile = async (data) => {
   await fs.writeFile('./login.json', loginToStr);
 };
 
+const writeTalkerFile = async (talk) => {
+  const talker = await readContentFile();
+  talker.push(talk);
+  const talkerToStr = JSON.stringify(talker);
+  await fs.writeFile('./talker.json', talkerToStr);
+};
+
 module.exports = {
     readContentFile,
     writeContentFile,
+    writeTalkerFile,
 };

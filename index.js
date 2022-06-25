@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const crypto = require('crypto');
-const { readContentFile, writeContentFile } = require('./utils');
+const { readContentFile, writeContentFile, writeTalkerFile } = require('./utils');
 const { isValidEmail } = require('./middlewares/validateEmail');
 const { isValidPassword } = require('./middlewares/validatePassword');
 const { isValidToken } = require('./middlewares/validateToken');
@@ -51,8 +51,8 @@ app.post('/talker', isValidToken, isValidName, isValidAge, isValidTalk, isValidW
   const { id, name, age, talk } = req.body;
   const talker = await readContentFile();
   const data = talker.find((e) => e.name === name);
-  await writeContentFile({ id, name, age, talk })
-  .then(res.status(201).json(data));
+  await writeTalkerFile({ id, name, age, talk });
+  return res.status(201).json(data);
 });
 
 app.listen(PORT, () => {
