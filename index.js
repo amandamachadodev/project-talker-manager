@@ -51,8 +51,8 @@ app.post('/talker', isValidToken, isValidName, isValidAge, isValidTalk, isValidW
   const { id, name, age, talk } = req.body;
   const talker = await readContentFile();
   const data = talker.find((e) => e.name === name);
-  await writeContentFile({ id, name, age, talk });
-  return res.status(200).json(data);
+  await writeContentFile({ id, name, age, talk })
+  .then(res.status(200).json(data));
 });
 
 app.listen(PORT, () => {
