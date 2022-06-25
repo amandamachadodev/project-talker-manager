@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const crypto = require('crypto');
-const { readContentFile, writeContentFile, writeTalkerFile } = require('./utils');
+const { readContentFile, writeContentFile } = require('./utils');
 const { isValidEmail } = require('./middlewares/validateEmail');
 const { isValidPassword } = require('./middlewares/validatePassword');
 const { isValidToken } = require('./middlewares/validateToken');
@@ -22,14 +22,14 @@ app.get('/', (_request, response) => {
 });
 
 app.get('/talker', async (_req, res) => {
-  const talker = await readContentFile();
+  const talker = await readContentFile('./talker.json');
   if (!talker.length) return res.status(200).json([]);
   return res.status(200).json(talker);
 });
 
 app.get('/talker/:id', async (req, res) => {
   const { id } = req.params;
-  const talker = await readContentFile();
+  const talker = await readContentFile('./talker.json');
   const data = talker.find((r) => r.id === Number(id));
   if (!data) {
  return res.status(404).json({
@@ -41,7 +41,7 @@ app.get('/talker/:id', async (req, res) => {
 
 app.post('/login', isValidEmail, isValidPassword, async (req, res) => {
   const { email, password } = req.body;
-  await writeContentFile(email, password);
+  await writeContentFile('./login.json', { email, password });
   const token = crypto.randomBytes(8).toString('hex');
   return res.status(200).json({ token });
 });
@@ -49,7 +49,7 @@ app.post('/login', isValidEmail, isValidPassword, async (req, res) => {
 app.post('/talker', isValidToken, isValidName, isValidAge, isValidTalk, isValidWatchedAt,
   isValidRate, async (req, res) => {
   const { id, name, age, talk } = req.body;
-  await writeTalkerFile(id, name, age, talk);
+  await writeContentFile('./talker', { id, name, age, talk });
   return res.status(201).json({ id, name, age, talk });
 });
 

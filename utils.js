@@ -1,23 +1,29 @@
-const fs = require('fs/promises');
+const fs = require('fs').promises;
 
-const readContentFile = async () => JSON.parse(await fs.readFile('./talker.json'));
-
-const writeContentFile = async (data) => {
-  const login = await readContentFile();
-  login.push(data);
-  const loginToStr = JSON.stringify(login);
-  await fs.writeFile('./login.json', loginToStr);
+const readContentFile = async (path) => {
+  try {
+    const content = await fs.readFile(path);
+    return JSON.parse(content);
+  } catch (error) {
+    return null;
+  }
 };
 
-const writeTalkerFile = async (talk) => {
-  const talker = await readContentFile();
-  talker.push(talk);
-  const talkerToStr = JSON.stringify(talker);
-  await fs.writeFile('./talker.json', talkerToStr);
+const writeContentFile = async (path, content) => {
+  try {
+    const arrContent = await readContentFile(path) || [];
+
+    arrContent.push(content);
+    await fs.writeFile(path, JSON.stringify(arrContent));
+
+    return content;
+  } catch (error) {
+    console.log(error.message);
+    return null;
+  }
 };
 
 module.exports = {
-    readContentFile,
-    writeContentFile,
-    writeTalkerFile,
+  readContentFile,
+  writeContentFile,
 };
