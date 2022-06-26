@@ -48,10 +48,10 @@ app.post('/login', isValidEmail, isValidPassword, async (req, res) => {
 
 app.post('/talker', isValidToken, isValidName, isValidAge, isValidTalk, isValidWatchedAt,
   isValidRate, async (req, res) => {
-  const { name, age, talk } = req.body;
+  const { id, name, age, talk } = req.body;
   const talker = readContentFile('/talker.json');
   if (talker) {
-    const newTalker = { id: talker.length + 1, name, age, talk };
+    const newTalker = { id, name, age, talk };
     await writeContentFile('./talker.json', newTalker);
     return res.status(201).json(newTalker);
   }
