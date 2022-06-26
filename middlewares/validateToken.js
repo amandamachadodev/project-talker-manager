@@ -4,7 +4,8 @@ const isValidToken = (req, res, next) => {
   if (token.find((e) => e !== token)) {
     return res.status(401).json({ message: 'Token não encontrado' });
   }
-  if (!token || token.length !== 16) {
+  const tokenRegex = new RegExp(/^[a-zA-Z0-9]{16}$/);
+  if (!tokenRegex.test(token)) {
     return res.status(401).json({ message: 'Token inválido' });
   }
   
