@@ -1,7 +1,7 @@
 const isValidToken = (req, res, next) => {
   const token = req.headers.authorization;
   
-  if (token.find((e) => e !== token)) {
+  if (!token) {
     return res.status(401).json({ message: 'Token não encontrado' });
   }
   const tokenRegex = new RegExp(/^[a-zA-Z0-9]{16}$/);
