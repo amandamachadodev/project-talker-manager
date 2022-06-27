@@ -39,4 +39,14 @@ isValidRate, async (req, res) => {
   return res.status(200).json(editTalker);
 });
 
+router.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+  const talker = await readContentFile(fileTalker);
+  const talkerId = talker.findIndex((e) => +e.id === +id);
+
+  talker.splice(talkerId, 1);
+
+  res.status(204).end();
+});
+
 module.exports = router;
