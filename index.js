@@ -21,9 +21,9 @@ app.get('/talker/search', async (req, res) => {
   const { searchTerm } = req.query;
   const talker = await readContentFile(fileTalker);
   const talkerName = talker.filter((e) => e.name.includes(searchTerm));
-  if (searchTerm.length === 0) return res.status(200).json(talker);
+  if (searchTerm.length === 0 || searchTerm === undefined) return res.status(200).json(talker);
   if (!talkerName) return res.status(200).json([]);
-  res.status(200).json(talkerName);
+  return res.status(200).json(talkerName);
 });
 
 app.get('/talker', async (_req, res) => {
