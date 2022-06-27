@@ -17,6 +17,13 @@ app.get('/', (_request, response) => {
 });
 
 const fileTalker = './talker.json';
+app.get('/talker/search', async (req, res) => {
+  const { name } = req.query;
+  const talker = await readContentFile(fileTalker);
+  const talkerName = talker.filter((e) => e.name.includes(name));
+  res.status(200).json(talkerName);
+});
+
 app.get('/talker', async (_req, res) => {
   const talker = await readContentFile(fileTalker);
   if (!talker.length) return res.status(200).json([]);
