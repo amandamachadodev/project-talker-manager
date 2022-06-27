@@ -46,7 +46,9 @@ app.post('/login', isValidEmail, isValidPassword, async (req, res) => {
   return res.status(200).json({ token });
 });
 
-app.post('/talker', isValidToken, isValidName, isValidAge, isValidTalk, isValidWatchedAt,
+app.use(isValidToken);
+
+app.post('/talker', isValidName, isValidAge, isValidTalk, isValidWatchedAt,
   isValidRate, async (req, res) => {
   const { id, name, age, talk } = req.body;
   const newTalker = { id, name, age, talk };
