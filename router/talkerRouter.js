@@ -45,7 +45,7 @@ router.delete('/:id', async (req, res) => {
   const talkerId = talker.findIndex((e) => +e.id === +id);
 
   talker.splice(talkerId, 1);
-
+  await writeContentFile(fileTalker, talker);
   res.status(204).end();
 });
 
