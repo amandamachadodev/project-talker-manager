@@ -9,23 +9,6 @@ const { isValidWatchedAt } = require('../middlewares/validadeWatchedAt');
 const { isValidRate } = require('../middlewares/validateRate');
 
 const fileTalker = './talker.json';
-router.get('/talker', async (_req, res) => {
-  const talker = await readContentFile(fileTalker);
-  if (!talker.length) return res.status(200).json([]);
-  return res.status(200).json(talker);
-});
-
-router.get('/talker/:id', async (req, res) => {
-  const { id } = req.params;
-  const talker = await readContentFile(fileTalker);
-  const data = talker.find((e) => e.id === Number(id));
-  if (!data) {
- return res.status(404).json({
-    message: 'Pessoa palestrante não encontrada',
-  }); 
-}
-  return res.status(200).json(data);
-});
 
 router.post('/', isValidName, isValidAge, isValidTalk, isValidWatchedAt,
   isValidRate, async (req, res) => {

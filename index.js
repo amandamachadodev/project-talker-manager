@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const crypto = require('crypto');
-const { writeContentFile } = require('./utils');
+const { writeContentFile, readContentFile } = require('./utils');
 const { isValidEmail } = require('./middlewares/validateEmail');
 const { isValidPassword } = require('./middlewares/validatePassword');
 const { isValidToken } = require('./middlewares/validateToken');
@@ -14,6 +14,25 @@ const PORT = '3000';
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
+});
+
+const fileTalker = './talker.json';
+app.get('/talker', async (_req, res) => {
+  const talker = await readContentFile(fileTalker);
+  if (!talker.length) return res.status(200).json([]);
+  return res.status(200).json(talker);
+});
+
+app.get('/talker/:id', async (req, res) => {
+  const { id } = req.params;
+  const talker = await readContentFile(fileTalker);
+  const data = talker.find((e) => e.id === Number(id));
+  if (!data) {
+ return res.status(404).json({
+    message: 'Pessoa palestrante não encontrada',
+  }); 
+}
+  return res.status(200).json(data);
 });
 
 app.post('/login', isValidEmail, isValidPassword, async (req, res) => {
