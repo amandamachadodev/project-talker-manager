@@ -6,7 +6,7 @@ const isValidAge = (req, res, next) => {
     || age.length === 0
   ) return res.status(400).json({ message: 'O campo "age" é obrigatório' });
   if (
-    age.length < 18
+    +age < 18
   ) return res.status(400).json({ message: 'A pessoa palestrante deve ser maior de idade' });
     
   next();
