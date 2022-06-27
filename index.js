@@ -18,9 +18,9 @@ app.get('/', (_request, response) => {
 
 const fileTalker = './talker.json';
 app.get('/talker/search', async (req, res) => {
-  const { name } = req.query;
+  const { searchTerm } = req.query;
   const talker = await readContentFile(fileTalker);
-  const talkerName = talker.filter((e) => e.name.includes(name));
+  const talkerName = talker.filter((e) => e.name.includes(searchTerm));
   if (talkerName.length === 0) return res.status(200).json(talker);
   res.status(200).json(talkerName);
 });
